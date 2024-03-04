@@ -1,8 +1,6 @@
-# yolox
+# yolox 🤞
 
-Use AI language models to write one-liner shell commands, then execute them. 🤞
-
-Only supports OpenAI GPT for now, but could be updated to use Llama on Replicate, Ollama, etc.
+Use AI language models to write one-liner shell commands, then execute them. 
 
 ## Installation
 
@@ -18,7 +16,7 @@ npx yolox@latest "use ffmpeg to convert foo.mkv to foo.mp4"
 
 ## Usage
 
-This thing only supports OpenAI GPT for the moment, but it could be easily updated to support other models using Replicate, Ollama, etc.
+This thing only supports OpenAI GPT for the moment, but it could be easily updated to support other models using Replicate, Ollama, etc. [Pull requests welcome!](https://github.com/zeke/yolox/issues)
 
 Set your OpenAI API key in the environment:
 
