@@ -6,7 +6,7 @@
   "repository": "https://github.com/zeke/yolox",
   "scripts": {
     "test": "echo yolox"
-  }
+  },
   "keywords": [
     "ai",
     "llm",
