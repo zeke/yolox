@@ -1,0 +1,20 @@
+{
+  "name": "yolox",
+  "version": "1.0.0",
+  "description": "Use AI langage models to write one-liner shell commands, then execute them. 🤞",
+  "bin": "index.sh",
+  "repository": "https://github.com/zeke/yolox",
+  "keywords": [
+    "ai",
+    "llm",
+    "chatgpt",
+    "openai",
+    "bash",
+    "shell"
+  ],
+  "author": "Zeke Sikelianos <zeke@sikelianos.com> (http://zeke.sikelianos.com/)",
+  "license": "MIT",
+  "dependencies": {
+    "chatgpt": "^5.2.5"
+  }
+}
