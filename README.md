@@ -2,6 +2,28 @@
 
 Use AI language models to write one-liner shell commands, then execute them. 
 
+## Examples
+
+```
+$ yolox list all files in the current directory, sorted by human size
+# ls -lhS
+```
+
+```
+$ yolox rename all jpeg files to jpg
+# for file in *.jpeg; do mv "$file" "${file%.jpeg}.jpg"; done
+```
+
+```
+$ yolox extract from 0:30 to 1:22 from video.mp4 and save it as audio.m4a
+# ffmpeg -i video.mp4 -ss 00:00:30 -to 00:01:22 -vn -acodec copy audio.m4a
+```
+
+```
+$ yolox create slideshow.mp4 from all the jpg files in the current directory with one second for each slide
+# ffmpeg -framerate 1 -pattern_type glob -i '*.jpg' slideshow.mp4
+```
+
 ## Caution
 
 This tool should be used with caution. It's called "YOLO X" because it's dangerous. **yolo** as in "you only live once" and *x* as in "execute this code". It lets an AI write code for you, then blindly executes that code on your system. There are a few guardrails in its prompt to prevent the result from taking destructive actions like deleting files or directories, but there's always still a danger that the resulting commands will have unintended consequences. You've been warned!
