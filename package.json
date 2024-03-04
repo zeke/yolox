@@ -4,6 +4,9 @@
   "description": "Use AI langage models to write one-liner shell commands, then execute them. 🤞",
   "bin": "index.sh",
   "repository": "https://github.com/zeke/yolox",
+  "scripts": {
+    "test": "echo yolox"
+  }
   "keywords": [
     "ai",
     "llm",
