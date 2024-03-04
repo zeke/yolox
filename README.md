@@ -2,6 +2,10 @@
 
 Use AI language models to write one-liner shell commands, then execute them. 
 
+## Caution
+
+This tool should be used with caution. It's called "YOLO X" because it's dangerous. **yolo** as in "you only live once" and *x* as in "execute this code". It lets an AI write code for you, then blindly executes that code on your system. There are a few guardrails in its prompt to prevent the result from taking destructive actions like deleting files or directories, but there's always still a danger that the resulting commands will have unintended consequences. You've been warned!
+
 ## Installation
 
 ```console
