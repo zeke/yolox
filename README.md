@@ -1,6 +1,6 @@
 # yolox
 
-Use AI langage models to write one-liner shell commands, then execute them. 🤞
+Use AI language models to write one-liner shell commands, then execute them. 🤞
 
 Only supports OpenAI GPT for now, but could be updated to use Llama on Replicate, Ollama, etc.
 
