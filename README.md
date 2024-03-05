@@ -58,13 +58,24 @@ yolox extract audio from maths.mp4 and save it as maths.m4a
 # ffmpeg -i maths.mp4 -vn -acodec copy maths.m4a
 ```
 
-## Dependencies
+## Alternatives
 
-- [chatgpt](https://ghub.io/chatgpt): Node.js client for the official ChatGPT API.
+[GitHub Copilot CLI](https://docs.github.com/en/copilot/github-copilot-in-the-cli/using-github-copilot-in-the-cli) is a paid offering from GitHub that works similarly to yolox, but is safer. Rather than running the generated command, it shows you the command and gives you some options:
 
-## Dev Dependencies
+```
+$ gh copilot suggest -t shell "list all files"
 
-None
+Suggestion:
+
+  ls -a
+
+? Select an option  [Use arrows to move, type to filter]
+> Copy command to clipboard
+  Explain command
+  Revise command
+  Rate response
+  Exit
+```
 
 ## License
 
