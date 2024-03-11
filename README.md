@@ -24,6 +24,11 @@ $ yolox create slideshow.mp4 from all the jpg files in the current directory wit
 # ffmpeg -framerate 1 -pattern_type glob -i '*.jpg' slideshow.mp4
 ```
 
+```
+$ yolox "add 100px white padding around dots.png and save it as dots-with-room.png"
+# convert dots.png -bordercolor white -border 100 dots-with-room.png
+```
+
 ## Caution
 
 This tool should be used with caution. It's called "YOLO X" because it's dangerous. **yolo** as in "you only live once" and *x* as in "execute this code". It lets an AI write code for you, then blindly executes that code on your system. There are a few guardrails in its prompt to prevent the result from taking destructive actions like deleting files or directories, but there's always still a danger that the resulting commands will have unintended consequences. You've been warned!
