@@ -1,11 +1,13 @@
 {
   "name": "yolox",
   "version": "1.0.4",
-  "description": "Use AI langage models to write one-liner shell commands, then execute them. 🤞",
-  "bin": "index.sh",
+  "description": "Use AI language models to write one-liner shell commands, then execute them. 🤞",
+  "type": "module",
+  "bin": "index.js",
   "repository": "https://github.com/zeke/yolox",
   "scripts": {
-    "test": "echo yolox"
+    "test": "standard",
+    "lint": "standard --fix"
   },
   "keywords": [
     "ai",
@@ -18,6 +20,9 @@
   "author": "Zeke Sikelianos <zeke@sikelianos.com> (http://zeke.sikelianos.com/)",
   "license": "MIT",
   "dependencies": {
-    "chatgpt": "^5.2.5"
+    "openai": "^4.50.0"
+  },
+  "devDependencies": {
+    "standard": "^17.1.0"
   }
 }
