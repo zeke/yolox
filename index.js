@@ -1,12 +1,37 @@
 import OpenAI from 'openai'
 import { execSync } from 'node:child_process'
+import minimist from 'minimist'
 
-const model = 'gpt-4'
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-})
+const argv = minimist(process.argv.slice(2))
+const englishCommand = argv._.join(' ')
+let model = argv.model || 'gpt-4o'
 
-const englishCommand = process.argv.slice(2).join(' ')
+// Support shorthands
+if (model === 'llama' || model === 'llama3') {
+  model = 'meta/llama-3-70b-instruct'
+}
+
+let client
+let completionOptions
+
+// Use Replicate Lifeboat -- https://lifeboat.replicate.dev
+if (model === 'meta/llama-3-70b-instruct') {
+  client = new OpenAI({
+    apiKey: process.env.REPLICATE_API_TOKEN,
+    baseURL: 'https://openai-proxy.replicate.com/v1'
+  })
+  completionOptions = {
+    maxTokens: 64,
+    stream: false
+  }
+} else {
+  client = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY
+  })
+  completionOptions = {
+    stream: true
+  }
+}
 
 const prompt = [
   `Write a one-line shell command to ${englishCommand}.`,
@@ -17,7 +42,9 @@ const prompt = [
   'Just show the command.'
 ].join(' ')
 
-const completions = await openai.chat.completions.create({
+console.log(`Model: ${model}`)
+
+const options = {
   model,
   messages: [
     {
@@ -25,18 +52,20 @@ const completions = await openai.chat.completions.create({
       content: prompt
     }
   ],
-  stream: true
-})
+  ...completionOptions
+}
+
+const completions = await client.chat.completions.create(options)
 
 const output = []
 for await (const part of completions) {
   output.push(part.choices[0]?.delta?.content || '')
 }
-
 const shellCommand = output.join('')
 
 try {
-  console.log(`# ${shellCommand}\n`)
+  console.log(`Command: ${shellCommand}`)
+  console.log('')
   const result = execSync(shellCommand).toString()
   console.log(result)
 } catch (error) {

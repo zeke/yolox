@@ -20,6 +20,7 @@
   "author": "Zeke Sikelianos <zeke@sikelianos.com> (http://zeke.sikelianos.com/)",
   "license": "MIT",
   "dependencies": {
+    "minimist": "^1.2.8",
     "openai": "^4.50.0"
   },
   "devDependencies": {
