@@ -47,7 +47,11 @@ npx yolox@latest "use ffmpeg to convert foo.mkv to foo.mp4"
 
 ## Usage
 
-This thing only supports OpenAI GPT for the moment, but it could be easily updated to support other models using Replicate, Ollama, etc. [Pull requests welcome!](https://github.com/zeke/yolox/issues)
+yolox supports [GPT4o](https://openai.com/index/hello-gpt-4o/) on OpenAI and [Llama 3](https://replicate.com/meta/meta-llama-3-70b-instruct) on Replicate.
+
+To add support for other models or providers, [open a pull request](https://github.com/zeke/yolox/issues)!
+
+### OpenAI Usage (GPT4o)
 
 Set your OpenAI API key in the environment:
 
@@ -55,13 +59,28 @@ Set your OpenAI API key in the environment:
 export OPENAI_API_KEY="..."
 ```
 
-Give it a command and it will execute it:
+Then give it a command and it will execute it:
 
 ```
-yolox extract audio from maths.mp4 and save it as maths.m4a
-# shell command to extract audio from maths.mp4 and save it as maths.m4a
+yolox "extract audio from maths.mp4 and save it as maths.m4a"
 # ffmpeg -i maths.mp4 -vn -acodec copy maths.m4a
 ```
+
+### Replicate Usage (Llama 3)
+
+Set your Replicate token in the environment:
+
+```console
+export REPLICATE_API_TOKEN="r8_..."
+```
+
+Then specify `model` as a flag set to `llama` or `llama3`:
+
+```
+yolox "extract audio from maths.mp4 and save it as maths.m4a" --model=llama3
+# ffmpeg -i maths.mp4 -vn -acodec copy maths.m4a
+```
+
 
 ## Alternatives
 

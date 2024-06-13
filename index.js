@@ -1,12 +1,33 @@
-import OpenAI from 'openai'
 import { execSync } from 'node:child_process'
+import minimist from 'minimist'
+import { createClient } from './client.js'
 
-const model = 'gpt-4'
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-})
+const argv = minimist(process.argv.slice(2))
+const englishCommand = argv._.join(' ')
+const model = argv.model || 'gpt-4o'
 
-const englishCommand = process.argv.slice(2).join(' ')
+const models = {
+  llama: 'replicate:meta/meta-llama-3-70b-instruct',
+  llama3: 'replicate:meta/meta-llama-3-70b-instruct',
+  'gpt-4o': 'openai:gpt-4o',
+  gpt4: 'openai:gpt-4o'
+}
+
+if (!englishCommand) {
+  console.log('Usage: yolox <english-command>')
+  console.log('Example: yolox "list png files in current directory with human-friendly sizes"')
+  process.exit()
+}
+
+if (!models[model]) {
+  console.error(`Error: Model '${model}' is not supported.`)
+  console.log('Available models are:', Object.keys(models).join(', '))
+  process.exit()
+}
+
+const provider = models[model].split(':')[0]
+const modelFullName = models[model].split(':')[1]
+const client = createClient(provider)
 
 const prompt = [
   `Write a one-line shell command to ${englishCommand}.`,
@@ -17,26 +38,30 @@ const prompt = [
   'Just show the command.'
 ].join(' ')
 
-const completions = await openai.chat.completions.create({
-  model,
+console.log(`Model: ${modelFullName}`)
+
+const options = {
+  model: modelFullName,
   messages: [
     {
       role: 'user',
       content: prompt
     }
   ],
-  stream: true
-})
+  ...client.completionOptions
+}
+
+const completions = await client.chat.completions.create(options)
 
 const output = []
 for await (const part of completions) {
   output.push(part.choices[0]?.delta?.content || '')
 }
-
 const shellCommand = output.join('')
 
 try {
-  console.log(`# ${shellCommand}\n`)
+  console.log(`Command: ${shellCommand}`)
+  console.log('')
   const result = execSync(shellCommand).toString()
   console.log(result)
 } catch (error) {
