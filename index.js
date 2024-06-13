@@ -1,37 +1,33 @@
-import OpenAI from 'openai'
 import { execSync } from 'node:child_process'
 import minimist from 'minimist'
+import { createClient } from './client.js'
 
 const argv = minimist(process.argv.slice(2))
 const englishCommand = argv._.join(' ')
-let model = argv.model || 'gpt-4o'
+const model = argv.model || 'gpt-4o'
 
-// Support shorthands
-if (model === 'llama' || model === 'llama3') {
-  model = 'meta/llama-3-70b-instruct'
+const models = {
+  llama: 'replicate:meta/meta-llama-3-70b-instruct',
+  llama3: 'replicate:meta/meta-llama-3-70b-instruct',
+  'gpt-4o': 'openai:gpt-4o',
+  gpt4: 'openai:gpt-4o'
 }
 
-let client
-let completionOptions
-
-// Use Replicate Lifeboat -- https://lifeboat.replicate.dev
-if (model === 'meta/llama-3-70b-instruct') {
-  client = new OpenAI({
-    apiKey: process.env.REPLICATE_API_TOKEN,
-    baseURL: 'https://openai-proxy.replicate.com/v1'
-  })
-  completionOptions = {
-    maxTokens: 64,
-    stream: false
-  }
-} else {
-  client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-  })
-  completionOptions = {
-    stream: true
-  }
+if (!englishCommand) {
+  console.log('Usage: yolox <english-command>')
+  console.log('Example: yolox "list png files in current directory with human-friendly sizes"')
+  process.exit()
 }
+
+if (!models[model]) {
+  console.error(`Error: Model '${model}' is not supported.`)
+  console.log('Available models are:', Object.keys(models).join(', '))
+  process.exit()
+}
+
+const provider = models[model].split(':')[0]
+const modelFullName = models[model].split(':')[1]
+const client = createClient(provider)
 
 const prompt = [
   `Write a one-line shell command to ${englishCommand}.`,
@@ -42,17 +38,17 @@ const prompt = [
   'Just show the command.'
 ].join(' ')
 
-console.log(`Model: ${model}`)
+console.log(`Model: ${modelFullName}`)
 
 const options = {
-  model,
+  model: modelFullName,
   messages: [
     {
       role: 'user',
       content: prompt
     }
   ],
-  ...completionOptions
+  ...client.completionOptions
 }
 
 const completions = await client.chat.completions.create(options)
