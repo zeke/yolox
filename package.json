@@ -1,6 +1,6 @@
 {
   "name": "yolox",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Use AI language models to write one-liner shell commands, then execute them. 🤞",
   "type": "module",
   "bin": "index.js",
