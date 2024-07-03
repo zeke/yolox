@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { execSync } from 'node:child_process'
+import { spawn } from 'node:child_process'
 import minimist from 'minimist'
 import { createClient } from './client.js'
 
@@ -61,11 +61,23 @@ for await (const part of completions) {
 }
 const shellCommand = output.join('')
 
-try {
-  console.log(`Command: ${shellCommand}`)
-  console.log('')
-  const result = execSync(shellCommand).toString()
-  console.log(result)
-} catch (error) {
+console.log(`Command: ${shellCommand}`)
+console.log('')
+
+const child = spawn(shellCommand, { shell: true })
+
+child.stdout.on('data', (data) => {
+  process.stdout.write(data)
+})
+
+child.stderr.on('data', (data) => {
+  process.stderr.write(data)
+})
+
+child.on('error', (error) => {
   console.error(`Error executing command: ${error.message}`)
-}
+})
+
+child.on('close', (code) => {
+  console.log(`Child process exited with code ${code}`)
+})
