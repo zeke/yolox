@@ -4,9 +4,12 @@ import { spawn } from 'node:child_process'
 import minimist from 'minimist'
 import { createClient } from './client.js'
 
-const argv = minimist(process.argv.slice(2))
+const argv = minimist(process.argv.slice(2), {
+  boolean: ['print']
+})
 const englishCommand = argv._.join(' ')
 const model = argv.model || 'gpt-4o'
+const printMode = argv.print || false
 
 const models = {
   llama: 'replicate:meta/meta-llama-3-70b-instruct',
@@ -63,6 +66,10 @@ const shellCommand = output.join('')
 
 console.log(`Command: ${shellCommand}`)
 console.log('')
+
+if (printMode) {
+  process.exit()
+}
 
 const child = spawn(shellCommand, { shell: true })
 
