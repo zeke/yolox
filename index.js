@@ -9,8 +9,9 @@ const englishCommand = argv._.join(' ')
 const model = argv.model || 'gpt-4o'
 
 const models = {
-  llama: 'replicate:meta/meta-llama-3-70b-instruct',
+  llama: 'replicate:meta/meta-llama-3.1-405b-instruct',
   llama3: 'replicate:meta/meta-llama-3-70b-instruct',
+  llama31: 'replicate:meta/meta-llama-3.1-405b-instruct',
   'gpt-4o': 'openai:gpt-4o',
   gpt4: 'openai:gpt-4o'
 }

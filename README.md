@@ -74,13 +74,12 @@ Set your Replicate token in the environment:
 export REPLICATE_API_TOKEN="r8_..."
 ```
 
-Then specify `model` as a flag set to `llama` or `llama3`:
+Then specify `model` as a flag set to `llama` (which uses [meta/meta-llama-3.1-405b-instruct](https://replicate.com/meta/meta-llama-3.1-405b-instruct)):
 
 ```
-yolox "extract audio from maths.mp4 and save it as maths.m4a" --model=llama3
+yolox "extract audio from maths.mp4 and save it as maths.m4a" --model=llama
 # ffmpeg -i maths.mp4 -vn -acodec copy maths.m4a
 ```
-
 
 ## Alternatives
 
