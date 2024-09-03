@@ -29,6 +29,13 @@ $ yolox "add 100px white padding around dots.png and save it as dots-with-room.p
 # convert dots.png -bordercolor white -border 100 dots-with-room.png
 ```
 
+You can also pass a file containing the prompt. This lets you write long prompts and iterate on them without retyping:
+
+```
+echo "do some stuff" > PROMPT.md
+$ yolox PROMPT.md
+```
+
 ## Caution
 
 This tool should be used with caution. It's called "YOLO X" because it's dangerous. **yolo** as in "you only live once" and *x* as in "execute this code". It lets an AI write code for you, then blindly executes that code on your system. There are a few guardrails in its prompt to prevent the result from taking destructive actions like deleting files or directories, but there's always still a danger that the resulting commands will have unintended consequences. You've been warned!
@@ -46,6 +53,10 @@ npx yolox@latest "use ffmpeg to convert foo.mkv to foo.mp4"
 ```
 
 ## Usage
+
+```
+yolox <prompt-string-or-filename-containing-prompt-string>
+```
 
 yolox supports [GPT4o](https://openai.com/index/hello-gpt-4o/) on OpenAI and [Llama 3](https://replicate.com/meta/meta-llama-3-70b-instruct) on Replicate.
 

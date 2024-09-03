@@ -4,8 +4,12 @@ import { spawn } from 'node:child_process'
 import minimist from 'minimist'
 import { createClient } from './client.js'
 
+import { readFile } from 'node:fs/promises'
+import { existsSync } from 'node:fs'
+import { resolve } from 'node:path'
+
 const argv = minimist(process.argv.slice(2))
-const englishCommand = argv._.join(' ')
+let englishCommand = argv._.join(' ')
 const model = argv.model || 'gpt-4o'
 
 const models = {
@@ -26,6 +30,18 @@ if (!models[model]) {
   console.error(`Error: Model '${model}' is not supported.`)
   console.log('Available models are:', Object.keys(models).join(', '))
   process.exit()
+}
+
+if (englishCommand && !englishCommand.includes(' ')) {
+  const filePath = resolve(process.cwd(), englishCommand)
+  if (existsSync(filePath)) {
+    try {
+      englishCommand = (await readFile(filePath, 'utf8')).trim()
+    } catch (error) {
+      console.error(`Error reading file: ${error.message}`)
+      process.exit(1)
+    }
+  }
 }
 
 const provider = models[model].split(':')[0]
@@ -76,9 +92,13 @@ child.stderr.on('data', (data) => {
 })
 
 child.on('error', (error) => {
-  console.error(`Error executing command: ${error.message}`)
+  console.error(`\nError executing command: ${error.message}`)
 })
 
 child.on('close', (code) => {
-  console.log(`Child process exited with code ${code}`)
+  if (code === 0) {
+    console.log(`\n✅ Success! Child process exited with code ${code}`)
+  } else {
+    console.log(`\n❌ Error! Child process exited with code ${code}`)
+  }
 })
