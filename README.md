@@ -92,6 +92,15 @@ yolox "extract audio from maths.mp4 and save it as maths.m4a" --model=llama
 # ffmpeg -i maths.mp4 -vn -acodec copy maths.m4a
 ```
 
+### Print mode
+
+Print the command but don't execute it:
+
+```console
+yolox --print "extract audio from maths.mp4 and save it as maths.m4a"
+ffmpeg -i maths.mp4 -vn -acodec copy maths.m4a
+```
+
 ## Alternatives
 
 [GitHub Copilot CLI](https://docs.github.com/en/copilot/github-copilot-in-the-cli/using-github-copilot-in-the-cli) is a paid offering from GitHub that works similarly to yolox, but is safer. Rather than running the generated command, it shows you the command and gives you some options:

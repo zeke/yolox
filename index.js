@@ -8,9 +8,12 @@ import { readFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 
-const argv = minimist(process.argv.slice(2))
+const argv = minimist(process.argv.slice(2), {
+  boolean: ['print']
+})
 let englishCommand = argv._.join(' ')
 const model = argv.model || 'gpt-4o'
+const printMode = argv.print || false
 
 const models = {
   llama: 'replicate:meta/meta-llama-3.1-405b-instruct',
@@ -80,6 +83,10 @@ const shellCommand = output.join('')
 
 console.log(`Command: ${shellCommand}`)
 console.log('')
+
+if (printMode) {
+  process.exit()
+}
 
 const child = spawn(shellCommand, { shell: true })
 
