@@ -87,7 +87,7 @@ Print the command but don't execute it:
 
 ```console
 yolox --print "extract audio from maths.mp4 and save it as maths.m4a"
-# ffmpeg -i maths.mp4 -vn -acodec copy maths.m4a
+ffmpeg -i maths.mp4 -vn -acodec copy maths.m4a
 ```
 
 ## Alternatives
