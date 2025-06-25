@@ -29,9 +29,35 @@ $ yolox "add 100px white padding around dots.png and save it as dots-with-room.p
 # convert dots.png -bordercolor white -border 100 dots-with-room.png
 ```
 
+### Working with Piped Data
+
+You can pipe data to yolox and it will include that data in the context when generating commands:
+
+```bash
+$ echo '{"name": "Alice", "age": 30, "city": "NYC"}' | yolox "use jq to extract just the name"
+# echo '{"name": "Alice", "age": 30, "city": "NYC"}' | jq '.name'
+```
+
+```bash
+$ cat users.json | yolox "use jq to get all users over age 25"
+# cat users.json | jq '.[] | select(.age > 25)'
+```
+
+```bash
+$ ps aux | yolox "find processes using more than 50% CPU"
+# ps aux | awk '$3 > 50'
+```
+
+```bash
+$ curl -s https://api.github.com/users/octocat | yolox "extract the public repos count with jq"
+# curl -s https://api.github.com/users/octocat | jq '.public_repos'
+```
+
+### File-based Prompts
+
 You can also pass a file containing the prompt. This lets you write long prompts and iterate on them without retyping:
 
-```
+```bash
 echo "do some stuff" > PROMPT.md
 $ yolox PROMPT.md
 ```
@@ -54,8 +80,37 @@ npx yolox@latest "use ffmpeg to convert foo.mkv to foo.mp4"
 
 ## Usage
 
-```
-yolox <prompt-string-or-filename-containing-prompt-string>
+yolox supports three input methods:
+
+1. **Direct command**: `yolox "command description"`
+2. **File input**: `yolox filename.txt` (where the file contains the command description)
+3. **Stdin input**: `echo "data" | yolox "process this data"`
+
+### Command Line Options
+
+- `--model`: Choose the AI model to use (default: `gpt-4o`)
+  - `gpt-4o` or `gpt4`: Uses OpenAI's GPT-4o
+  - `llama`, `llama3`, or `llama31`: Uses Meta's Llama models on Replicate
+- `--print`: Show the generated command without executing it
+
+### Examples
+
+```bash
+# Basic usage
+yolox "list files by size"
+
+# Use specific model
+yolox --model=llama "compress all png files"
+
+# Print mode (don't execute)
+yolox --print "find large files"
+
+# With piped data
+cat data.csv | yolox "convert to JSON using any available tools"
+
+# Using a prompt file
+echo "complex multi-line prompt here" > prompt.txt
+yolox prompt.txt
 ```
 
 yolox supports [GPT4o](https://openai.com/index/hello-gpt-4o/) on OpenAI and [Llama 3](https://replicate.com/meta/meta-llama-3-70b-instruct) on Replicate.
@@ -100,6 +155,22 @@ Print the command but don't execute it:
 yolox --print "extract audio from maths.mp4 and save it as maths.m4a"
 ffmpeg -i maths.mp4 -vn -acodec copy maths.m4a
 ```
+
+## Testing
+
+Run the test suite:
+
+```console
+npm test
+```
+
+The tests cover:
+- Basic functionality and argument parsing
+- Stdin input handling
+- Model selection and validation
+- File-based prompt input
+- Print mode operation
+- Error handling
 
 ## Alternatives
 

@@ -26,6 +26,7 @@ const models = {
 if (!englishCommand) {
   console.log('Usage: yolox <english-command>')
   console.log('Example: yolox "list png files in current directory with human-friendly sizes"')
+  console.log('Example with stdin: echo "data" | yolox "process this data"')
   process.exit()
 }
 
@@ -47,12 +48,33 @@ if (englishCommand && !englishCommand.includes(' ')) {
   }
 }
 
+// Read from stdin if data is piped
+let stdinData = ''
+if (!process.stdin.isTTY) {
+  try {
+    for await (const chunk of process.stdin) {
+      stdinData += chunk
+    }
+    stdinData = stdinData.trim()
+  } catch (error) {
+    console.error(`Error reading from stdin: ${error.message}`)
+    process.exit(1)
+  }
+}
+
 const provider = models[model].split(':')[0]
 const modelFullName = models[model].split(':')[1]
 const client = createClient(provider)
 
-const prompt = [
-  `Write a one-line shell command to ${englishCommand}.`,
+let prompt = `Write a one-line shell command to ${englishCommand}.`
+
+// If we have stdin data, include it in the prompt context
+if (stdinData) {
+  prompt = `Given this input data:\n\n${stdinData}\n\nWrite a one-line shell command to ${englishCommand}.`
+}
+
+const fullPrompt = [
+  prompt,
   'Do not write code that will delete files or folders.',
   'Do not explain the code.',
   'Do not fence the code.',
@@ -67,7 +89,7 @@ const options = {
   messages: [
     {
       role: 'user',
-      content: prompt
+      content: fullPrompt
     }
   ],
   ...client.completionOptions
