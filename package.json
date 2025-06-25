@@ -10,7 +10,9 @@
   },
   "repository": "https://github.com/zeke/yolox",
   "scripts": {
-    "test": "standard",
+    "test": "node test.js && standard",
+    "test:unit": "node test.js",
+    "test:lint": "standard",
     "lint": "standard --fix"
   },
   "keywords": [
