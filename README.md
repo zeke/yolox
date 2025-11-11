@@ -62,6 +62,36 @@ echo "do some stuff" > PROMPT.md
 $ yolox PROMPT.md
 ```
 
+## Supported Models
+
+yolox supports multiple AI models from different providers. Use the `--model` flag to specify which model to use (default is `gpt-4o-mini`).
+
+### OpenAI Models
+- `gpt-4o-mini` - GPT-4o Mini (default, most cost-effective)
+- `gpt-4o` - GPT-4o
+- `gpt4` - Alias for GPT-4o
+
+### Anthropic (Claude) Models
+- `sonnet` or `claude-sonnet` - Claude Sonnet 4.5
+- `haiku` or `claude-haiku` - Claude Haiku 4.5
+
+### Replicate (Llama) Models
+- `llama` or `llama31` - Llama 3.1 405B
+- `llama3` - Llama 3 70B
+
+**Examples:**
+
+```bash
+# Use default (GPT-4o Mini)
+yolox "list files"
+
+# Use Claude Sonnet
+yolox --model=sonnet "list files"
+
+# Use GPT-4o
+yolox --model=gpt-4o "list files"
+```
+
 ## Caution
 
 This tool should be used with caution. It's called "YOLO X" because it's dangerous. **yolo** as in "you only live once" and *x* as in "execute this code". It lets an AI write code for you, then blindly executes that code on your system. There are a few guardrails in its prompt to prevent the result from taking destructive actions like deleting files or directories, but there's always still a danger that the resulting commands will have unintended consequences. You've been warned!
