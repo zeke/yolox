@@ -9,11 +9,19 @@ import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 const argv = minimist(process.argv.slice(2), {
-  boolean: ['print']
+  boolean: ['print', 'version'],
+  alias: { v: 'version' }
 })
 let englishCommand = argv._.join(' ')
 const model = argv.model || 'gpt-4o'
 const printMode = argv.print || false
+
+// Handle version command
+if (argv.version) {
+  const packageJson = JSON.parse(await readFile(new URL('./package.json', import.meta.url), 'utf8'))
+  console.log(packageJson.version)
+  process.exit(0)
+}
 
 const models = {
   llama: 'replicate:meta/meta-llama-3.1-405b-instruct',
@@ -25,8 +33,11 @@ const models = {
 
 if (!englishCommand) {
   console.log('Usage: yolox <english-command>')
-  console.log('Example: yolox "list png files in current directory with human-friendly sizes"')
-  console.log('Example with stdin: echo "data" | yolox "process this data"')
+  console.log('       yolox --version|-v')
+  console.log('')
+  console.log('Examples:')
+  console.log('  yolox "list png files in current directory with human-friendly sizes"')
+  console.log('  echo "data" | yolox "process this data"')
   process.exit()
 }
 
@@ -75,6 +86,7 @@ if (stdinData) {
 
 const fullPrompt = [
   prompt,
+  'If using ImageMagick: The convert command is deprecated in IMv7, use "magick" instead of "convert" or "magick convert"',
   'Do not write code that will delete files or folders.',
   'Do not explain the code.',
   'Do not fence the code.',
