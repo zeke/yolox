@@ -88,19 +88,28 @@ yolox supports three input methods:
 
 ### Command Line Options
 
-- `--model`: Choose the AI model to use (default: `gpt-4o`)
+- `--model`: Choose the AI model to use (default: `gpt-4o-mini`)
+  - `gpt-4o-mini`: Uses OpenAI's GPT-4o-mini (default, most cost-effective)
   - `gpt-4o` or `gpt4`: Uses OpenAI's GPT-4o
+  - `sonnet` or `claude-sonnet`: Uses Anthropic's Claude Sonnet 4.5
+  - `haiku` or `claude-haiku`: Uses Anthropic's Claude Haiku 4.5
   - `llama`, `llama3`, or `llama31`: Uses Meta's Llama models on Replicate
 - `--print`: Show the generated command without executing it
 
 ### Examples
 
 ```bash
-# Basic usage
+# Basic usage (uses GPT-4o-mini by default)
 yolox "list files by size"
 
-# Use specific model
-yolox --model=llama "compress all png files"
+# Use Claude Sonnet
+yolox --model=sonnet "compress all png files"
+
+# Use Claude Haiku (fast and cost-effective)
+yolox --model=haiku "find large files"
+
+# Use GPT-4o
+yolox --model=gpt-4o "complex task requiring advanced reasoning"
 
 # Print mode (don't execute)
 yolox --print "find large files"
@@ -113,11 +122,14 @@ echo "complex multi-line prompt here" > prompt.txt
 yolox prompt.txt
 ```
 
-yolox supports [GPT4o](https://openai.com/index/hello-gpt-4o/) on OpenAI and [Llama 3](https://replicate.com/meta/meta-llama-3-70b-instruct) on Replicate.
+yolox supports:
+- [GPT-4o-mini and GPT-4o](https://openai.com/index/hello-gpt-4o/) on OpenAI
+- [Claude Sonnet 4.5 and Haiku 4.5](https://www.anthropic.com/claude) on Anthropic
+- [Llama 3](https://replicate.com/meta/meta-llama-3-70b-instruct) on Replicate
 
 To add support for other models or providers, [open a pull request](https://github.com/zeke/yolox/issues)!
 
-### OpenAI Usage (GPT4o)
+### OpenAI Usage (GPT-4o-mini, GPT-4o)
 
 Set your OpenAI API key in the environment:
 
@@ -125,11 +137,40 @@ Set your OpenAI API key in the environment:
 export OPENAI_API_KEY="..."
 ```
 
-Then give it a command and it will execute it:
+Then give it a command and it will execute it (uses GPT-4o-mini by default):
 
 ```
 yolox "extract audio from maths.mp4 and save it as maths.m4a"
 # ffmpeg -i maths.mp4 -vn -acodec copy maths.m4a
+```
+
+To use GPT-4o instead:
+
+```
+yolox --model=gpt-4o "extract audio from maths.mp4 and save it as maths.m4a"
+# ffmpeg -i maths.mp4 -vn -acodec copy maths.m4a
+```
+
+### Anthropic Usage (Claude Sonnet, Claude Haiku)
+
+Set your Anthropic API key in the environment:
+
+```console
+export ANTHROPIC_API_KEY="..."
+```
+
+Then specify `model` as `sonnet` for Claude Sonnet 4.5 (best for complex reasoning):
+
+```
+yolox --model=sonnet "extract audio from maths.mp4 and save it as maths.m4a"
+# ffmpeg -i maths.mp4 -vn -acodec copy maths.m4a
+```
+
+Or use `haiku` for Claude Haiku 4.5 (faster and more cost-effective):
+
+```
+yolox --model=haiku "list all jpg files"
+# ls *.jpg
 ```
 
 ### Replicate Usage (Llama 3)

@@ -13,7 +13,7 @@ const argv = minimist(process.argv.slice(2), {
   alias: { v: 'version' }
 })
 let englishCommand = argv._.join(' ')
-const model = argv.model || 'gpt-4o'
+const model = argv.model || 'gpt-4o-mini'
 const printMode = argv.print || false
 
 // Handle version command
@@ -28,15 +28,22 @@ const models = {
   llama3: 'replicate:meta/meta-llama-3-70b-instruct',
   llama31: 'replicate:meta/meta-llama-3.1-405b-instruct',
   'gpt-4o': 'openai:gpt-4o',
-  gpt4: 'openai:gpt-4o'
+  'gpt-4o-mini': 'openai:gpt-4o-mini',
+  gpt4: 'openai:gpt-4o',
+  sonnet: 'anthropic:claude-sonnet-4-5-20250929',
+  'claude-sonnet': 'anthropic:claude-sonnet-4-5-20250929',
+  haiku: 'anthropic:claude-haiku-4-5-20241220',
+  'claude-haiku': 'anthropic:claude-haiku-4-5-20241220'
 }
 
 if (!englishCommand) {
   console.log('Usage: yolox <english-command>')
   console.log('       yolox --version|-v')
   console.log('')
-  console.log('Examples:')
+  console.log('Example:')
   console.log('  yolox "list png files in current directory with human-friendly sizes"')
+  console.log('')
+  console.log('Example with stdin:')
   console.log('  echo "data" | yolox "process this data"')
   process.exit()
 }
