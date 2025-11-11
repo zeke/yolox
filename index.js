@@ -24,16 +24,12 @@ if (argv.version) {
 }
 
 const models = {
-  llama: 'replicate:meta/meta-llama-3.1-405b-instruct',
-  llama3: 'replicate:meta/meta-llama-3-70b-instruct',
-  llama31: 'replicate:meta/meta-llama-3.1-405b-instruct',
-  'gpt-4o': 'openai:gpt-4o',
   'gpt-4o-mini': 'openai:gpt-4o-mini',
-  gpt4: 'openai:gpt-4o',
-  sonnet: 'anthropic:claude-sonnet-4-5-20250929',
-  'claude-sonnet': 'anthropic:claude-sonnet-4-5-20250929',
-  haiku: 'anthropic:claude-haiku-4-5-20241220',
-  'claude-haiku': 'anthropic:claude-haiku-4-5-20241220'
+  'gpt-4o': 'openai:gpt-4o',
+  'claude-sonnet-4-5': 'anthropic:claude-sonnet-4-5-20250929',
+  'claude-haiku-4-5': 'anthropic:claude-haiku-4-5-20241220',
+  'llama-3-70b': 'replicate:meta/meta-llama-3-70b-instruct',
+  'llama-3.1-405b': 'replicate:meta/meta-llama-3.1-405b-instruct'
 }
 
 if (!englishCommand) {
