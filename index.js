@@ -33,11 +33,19 @@ const models = {
 }
 
 if (!englishCommand) {
-  console.log('Usage: yolox <english-command>')
+  console.log('Usage: yolox [options] <english-command>')
   console.log('       yolox --version|-v')
+  console.log('')
+  console.log('Options:')
+  console.log('  --model=<model>  Choose AI model (default: gpt-4o-mini)')
+  console.log('  --print          Show command without executing')
+  console.log('')
+  console.log('Available models:')
+  console.log('  ' + Object.keys(models).join(', '))
   console.log('')
   console.log('Example:')
   console.log('  yolox "list png files in current directory with human-friendly sizes"')
+  console.log('  yolox --model=claude-sonnet-4-5 "compress all images"')
   console.log('')
   console.log('Example with stdin:')
   console.log('  echo "data" | yolox "process this data"')

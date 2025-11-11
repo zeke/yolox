@@ -63,7 +63,8 @@ async function runYolox (args = [], stdin = null, env = {}, timeout = 5000) {
 test('yolox shows usage when no command provided', async () => {
   const result = await runYolox([])
   assert.strictEqual(result.code, 0)
-  assert(result.stdout.includes('Usage: yolox <english-command>'))
+  assert(result.stdout.includes('Usage: yolox [options] <english-command>'))
+  assert(result.stdout.includes('Available models:'))
   assert(result.stdout.includes('Example with stdin:'))
 })
 
@@ -123,7 +124,8 @@ test('yolox handles empty stdin gracefully', async () => {
 test('yolox includes proper usage examples', async () => {
   const result = await runYolox([])
 
-  assert(result.stdout.includes('Usage: yolox <english-command>'))
+  assert(result.stdout.includes('Usage: yolox [options] <english-command>'))
+  assert(result.stdout.includes('Available models:'))
   assert(result.stdout.includes('Example:'))
   assert(result.stdout.includes('Example with stdin:'))
 })
