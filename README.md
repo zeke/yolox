@@ -62,6 +62,30 @@ echo "do some stuff" > PROMPT.md
 $ yolox PROMPT.md
 ```
 
+## Supported Models
+
+Use the `--model` flag to specify which model to use (default is `gpt-4o-mini`).
+
+- `gpt-4o-mini` (default)
+- `gpt-4o`
+- `claude-sonnet-4-5`
+- `claude-haiku-4-5`
+- `llama-3-70b`
+- `llama-3.1-405b`
+
+**Examples:**
+
+```bash
+# Use default (gpt-4o-mini)
+yolox "list files"
+
+# Use Claude Sonnet
+yolox --model=claude-sonnet-4-5 "list files"
+
+# Use GPT-4o
+yolox --model=gpt-4o "list files"
+```
+
 ## Caution
 
 This tool should be used with caution. It's called "YOLO X" because it's dangerous. **yolo** as in "you only live once" and *x* as in "execute this code". It lets an AI write code for you, then blindly executes that code on your system. There are a few guardrails in its prompt to prevent the result from taking destructive actions like deleting files or directories, but there's always still a danger that the resulting commands will have unintended consequences. You've been warned!
@@ -88,19 +112,23 @@ yolox supports three input methods:
 
 ### Command Line Options
 
-- `--model`: Choose the AI model to use (default: `gpt-4o`)
-  - `gpt-4o` or `gpt4`: Uses OpenAI's GPT-4o
-  - `llama`, `llama3`, or `llama31`: Uses Meta's Llama models on Replicate
+- `--model`: Choose the AI model to use (default: `gpt-4o-mini`)
 - `--print`: Show the generated command without executing it
 
 ### Examples
 
 ```bash
-# Basic usage
+# Basic usage (uses gpt-4o-mini by default)
 yolox "list files by size"
 
-# Use specific model
-yolox --model=llama "compress all png files"
+# Use Claude Sonnet
+yolox --model=claude-sonnet-4-5 "compress all png files"
+
+# Use Claude Haiku (fast and cost-effective)
+yolox --model=claude-haiku-4-5 "find large files"
+
+# Use GPT-4o
+yolox --model=gpt-4o "complex task requiring advanced reasoning"
 
 # Print mode (don't execute)
 yolox --print "find large files"
@@ -113,11 +141,7 @@ echo "complex multi-line prompt here" > prompt.txt
 yolox prompt.txt
 ```
 
-yolox supports [GPT4o](https://openai.com/index/hello-gpt-4o/) on OpenAI and [Llama 3](https://replicate.com/meta/meta-llama-3-70b-instruct) on Replicate.
-
-To add support for other models or providers, [open a pull request](https://github.com/zeke/yolox/issues)!
-
-### OpenAI Usage (GPT4o)
+### OpenAI Usage (GPT-4o-mini, GPT-4o)
 
 Set your OpenAI API key in the environment:
 
@@ -125,11 +149,40 @@ Set your OpenAI API key in the environment:
 export OPENAI_API_KEY="..."
 ```
 
-Then give it a command and it will execute it:
+Then give it a command and it will execute it (uses GPT-4o-mini by default):
 
 ```
 yolox "extract audio from maths.mp4 and save it as maths.m4a"
 # ffmpeg -i maths.mp4 -vn -acodec copy maths.m4a
+```
+
+To use GPT-4o instead:
+
+```
+yolox --model=gpt-4o "extract audio from maths.mp4 and save it as maths.m4a"
+# ffmpeg -i maths.mp4 -vn -acodec copy maths.m4a
+```
+
+### Anthropic Usage (Claude Sonnet, Claude Haiku)
+
+Set your Anthropic API key in the environment:
+
+```console
+export ANTHROPIC_API_KEY="..."
+```
+
+Then specify `model` as `claude-sonnet-4-5` for Claude Sonnet 4.5 (best for complex reasoning):
+
+```
+yolox --model=claude-sonnet-4-5 "extract audio from maths.mp4 and save it as maths.m4a"
+# ffmpeg -i maths.mp4 -vn -acodec copy maths.m4a
+```
+
+Or use `claude-haiku-4-5` for Claude Haiku 4.5 (faster and more cost-effective):
+
+```
+yolox --model=claude-haiku-4-5 "list all jpg files"
+# ls *.jpg
 ```
 
 ### Replicate Usage (Llama 3)
@@ -140,10 +193,10 @@ Set your Replicate token in the environment:
 export REPLICATE_API_TOKEN="r8_..."
 ```
 
-Then specify `model` as a flag set to `llama` (which uses [meta/meta-llama-3.1-405b-instruct](https://replicate.com/meta/meta-llama-3.1-405b-instruct)):
+Then specify `model` as `llama-3.1-405b` or `llama-3-70b`:
 
 ```
-yolox "extract audio from maths.mp4 and save it as maths.m4a" --model=llama
+yolox --model=llama-3.1-405b "extract audio from maths.mp4 and save it as maths.m4a"
 # ffmpeg -i maths.mp4 -vn -acodec copy maths.m4a
 ```
 

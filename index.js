@@ -13,7 +13,7 @@ const argv = minimist(process.argv.slice(2), {
   alias: { v: 'version' }
 })
 let englishCommand = argv._.join(' ')
-const model = argv.model || 'gpt-4o'
+const model = argv.model || 'gpt-4o-mini'
 const printMode = argv.print || false
 
 // Handle version command
@@ -24,19 +24,30 @@ if (argv.version) {
 }
 
 const models = {
-  llama: 'replicate:meta/meta-llama-3.1-405b-instruct',
-  llama3: 'replicate:meta/meta-llama-3-70b-instruct',
-  llama31: 'replicate:meta/meta-llama-3.1-405b-instruct',
+  'gpt-4o-mini': 'openai:gpt-4o-mini',
   'gpt-4o': 'openai:gpt-4o',
-  gpt4: 'openai:gpt-4o'
+  'claude-sonnet-4-5': 'anthropic:claude-sonnet-4-5-20250929',
+  'claude-haiku-4-5': 'anthropic:claude-haiku-4-5-20241220',
+  'llama-3-70b': 'replicate:meta/meta-llama-3-70b-instruct',
+  'llama-3.1-405b': 'replicate:meta/meta-llama-3.1-405b-instruct'
 }
 
 if (!englishCommand) {
-  console.log('Usage: yolox <english-command>')
+  console.log('Usage: yolox [options] <english-command>')
   console.log('       yolox --version|-v')
   console.log('')
-  console.log('Examples:')
+  console.log('Options:')
+  console.log('  --model=<model>  Choose AI model (default: gpt-4o-mini)')
+  console.log('  --print          Show command without executing')
+  console.log('')
+  console.log('Available models:')
+  console.log('  ' + Object.keys(models).join(', '))
+  console.log('')
+  console.log('Example:')
   console.log('  yolox "list png files in current directory with human-friendly sizes"')
+  console.log('  yolox --model=claude-sonnet-4-5 "compress all images"')
+  console.log('')
+  console.log('Example with stdin:')
   console.log('  echo "data" | yolox "process this data"')
   process.exit()
 }
