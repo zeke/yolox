@@ -98,6 +98,7 @@ if (stdinData) {
 const fullPrompt = [
   prompt,
   'If using ImageMagick: The convert command is deprecated in IMv7, use "magick" instead of "convert" or "magick convert"',
+  'If asked to download a file from YouTube without a specific tool, use "yt-dlp".',
   'Do not write code that will delete files or folders.',
   'Do not explain the code.',
   'Do not fence the code.',
